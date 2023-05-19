@@ -2756,6 +2756,7 @@ FILLER(proc_startupdate_3, true)
 		/*
 		 * gid
 		 */
+		bpf_printk_krc("KRC - procupate_3 gid %d", egid.val);
 		res = bpf_val_to_ring_type(data, egid.val, PT_UINT32);
 		if (res != PPM_SUCCESS)
 			return res;
@@ -7004,6 +7005,7 @@ FILLER(sched_prog_fork_3, false)
 
 	/* Parameter 18: gid (type: PT_UINT32) */
 	kgid_t egid = _READ(cred->egid);
+	bpf_printk_krc("KRC - prog_fork_3  gid %d", egid.val);
 	res = bpf_val_to_ring_type(data, egid.val, PT_UINT32);
 	if(res != PPM_SUCCESS)
 	{
