@@ -1607,7 +1607,7 @@ void sinsp_parser::parse_clone_exit(sinsp_evt *evt)
 	}
 	ASSERT(parinfo->m_len == sizeof(int32_t));
 	tinfo->set_group(*(int32_t *)parinfo->m_val);
-
+ SINSP_INFO("KRC parse_clone_exit  %d", *(int32_t *)parinfo->m_val);
 	//
 	// If we're in a container, vtid and vpid are
 	// initialized to the values coming from the event,
@@ -1678,6 +1678,7 @@ void sinsp_parser::parse_clone_exit(sinsp_evt *evt)
 		tinfo->set_user(tinfo->m_user.uid);
 		tinfo->set_loginuser(tinfo->m_loginuser.uid);
 		tinfo->set_group(tinfo->m_group.gid);
+ SINSP_INFO("KRC parse_clone_exit -b-  %d", *(int32_t *)parinfo->m_val);
 	}
 
 	//
@@ -1688,6 +1689,7 @@ void sinsp_parser::parse_clone_exit(sinsp_evt *evt)
 		tinfo->set_user(tinfo->m_user.uid);
 		tinfo->set_loginuser(tinfo->m_loginuser.uid);
 		tinfo->set_group(tinfo->m_group.gid);
+ SINSP_INFO("KRC parse_clone_exit -c-  %d", *(int32_t *)parinfo->m_val);
 	}
 
 	//
@@ -2094,6 +2096,7 @@ void sinsp_parser::parse_execve_exit(sinsp_evt *evt)
 		parinfo = evt->get_param(17);
 		ASSERT(parinfo->m_len == sizeof(int64_t));
 		evt->m_tinfo->m_vpgid = *(int64_t *) parinfo->m_val;
+		SINSP_INFO("KRC parse_clone_exit  %ld", evt->m_tinfo->m_vpgid);
 		break;
 	default:
 		ASSERT(false);
@@ -2222,6 +2225,7 @@ void sinsp_parser::parse_execve_exit(sinsp_evt *evt)
 		evt->m_tinfo->set_user(evt->m_tinfo->m_user.uid);
 		evt->m_tinfo->set_loginuser(evt->m_tinfo->m_loginuser.uid);
 		evt->m_tinfo->set_group(evt->m_tinfo->m_group.gid);
+		SINSP_INFO("KRC parse_clone_exit  %d", evt->m_tinfo->m_group.gid);
 	}
 
 	//
@@ -5090,6 +5094,7 @@ void sinsp_parser::parse_setresgid_exit(sinsp_evt *evt)
 		{
 			if (evt->get_thread_info()) {
 				evt->get_thread_info()->set_group(new_egid);
+				SINSP_INFO("KRC parse_setresgid_exit  %d", new_egid);
 			}
 		}
 	}
@@ -5139,6 +5144,7 @@ void sinsp_parser::parse_setgid_exit(sinsp_evt *evt)
 		uint32_t new_egid = *(uint32_t *)parinfo->m_val;
 		if (evt->get_thread_info()) {
 			evt->get_thread_info()->set_group(new_egid);
+			SINSP_DEBUG("KRC parse_setgid_exit  %d", new_egid);
 		}
 	}
 }
@@ -5494,6 +5500,7 @@ void sinsp_parser::parse_user_evt(sinsp_evt *evt)
 	parinfo = evt->get_param(1);
 	ASSERT(parinfo->m_len == sizeof(uint32_t));
 	gid = *(uint32_t *)parinfo->m_val;
+ SINSP_INFO("KRC parse_user_exit -b-  %d", gid);
 
 	parinfo = evt->get_param(2);
 	name = parinfo->m_val;
@@ -5525,6 +5532,7 @@ void sinsp_parser::parse_group_evt(sinsp_evt *evt)
 	parinfo = evt->get_param(0);
 	ASSERT(parinfo->m_len == sizeof(uint32_t));
 	gid = *(uint32_t *)parinfo->m_val;
+ SINSP_INFO("KRC parse_group_evt -c-  %d", gid);
 
 	parinfo = evt->get_param(1);
 	name = parinfo->m_val;
@@ -5672,6 +5680,7 @@ void sinsp_parser::parse_chroot_exit(sinsp_evt *evt)
 			evt->m_tinfo->set_user(evt->m_tinfo->m_user.uid);
 			evt->m_tinfo->set_loginuser(evt->m_tinfo->m_loginuser.uid);
 			evt->m_tinfo->set_group(evt->m_tinfo->m_group.gid);
+ SINSP_INFO("KRC parse_chroot_exit -c-  %d", evt->m_tinfo->m_group.gid);
 		}
 	}
 }
